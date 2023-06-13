@@ -366,15 +366,14 @@ function CheckOut() {
 }
 
 //Estructura
-
+console.log(`Inicializando carrito...`);
 alert(
   `______________________________________________________\n||||||| BIENVENIDO A LA TIENDA DE KRECENTI  |||||||||\n______________________________________________________\n`
 );
 AddToShoppingCart();
-do {
+
   do {
-    opcion = prompt(
-      "1. Hacer Checkout de tu carrito\n2. Eliminar productos\n3. Agregar más productos\n    (S) Para salir"
+    opcion = prompt(      "1. Hacer Checkout de tu carrito\n2. Eliminar productos\n3. Agregar más productos\n    (S) Para salir"
     );
 
     switch (parseInt(opcion)) {
@@ -391,9 +390,10 @@ do {
         break;
 
       default:
-        alert(`Has salido de portal de compras, vuelve pronto`);
-        opcion = "S";
-        break;
-    }
-  } while (opcion != "s" && opcion != "S" && (opcion < 1 || opcion > 3));
-} while (opcion != "s" && opcion != "S");
+        if (opcion && (opcion.toLowerCase() === "s")) {
+            alert("Has salido del portal de compras, vuelve pronto");
+          }
+          break;
+        }
+    } while (opcion && opcion.toLowerCase() !== "s");
+
