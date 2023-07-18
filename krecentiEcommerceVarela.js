@@ -181,10 +181,10 @@ function vaciarCarrito() {
 
 //La uso para poder diferenciar de un vaciado interno de un vaciado del usuario y evitar que el modal me tape los Sweet alert
 function vaciarCarritoManualmente() {
-  console.log("Ejecutaste vaciar carrito");
+
 
   if (carrito.length == 0) {
-    console.log("Carro vacio");
+   
     // Alerta de carrito vacío al intentar pagar
     carritoModal.classList.remove("show");
     Swal.fire({
@@ -193,7 +193,7 @@ function vaciarCarritoManualmente() {
       icon: "error",
     });
   } else {
-    console.log("Carro con productos");
+   
     // Preguntar confirmación antes de vaciar el carrito
     carritoModal.classList.remove("show");
     Swal.fire({
