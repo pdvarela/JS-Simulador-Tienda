@@ -306,6 +306,15 @@ carritoIcono.addEventListener("click", () => {
 });
 
 // Evento para cerrar el carrito modal
+
+//Cuando se pulsa esc
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    carritoModal.classList.remove('show');
+  }
+});
+
+//Cuanado se hace click en el icono de cerrar
 btnCerrarCarrito.addEventListener("click", () => {
   carritoModal.classList.remove("show");
 });
