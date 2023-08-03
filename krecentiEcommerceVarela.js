@@ -10,57 +10,28 @@ const btnCerrarCarrito = document.getElementById("btn-cerrar-carrito");
 const btnPagar = document.getElementById("btn-pagar");
 const btnVaciarCarrito = document.getElementById("btn-vaciar-carrito");
 
-// Lista de productos
-const productos = [
-  {
-    nombre: "Libro de desarrollo personal",
-    id: 1,
-    precio: 29.99,
-    imagen: "https://picsum.photos/id/101/400/250",
-    descripcion:
-      "Un libro que te guiará en tu camino hacia el crecimiento personal y te ayudará a descubrir tu verdadero potencial.",
-  },
-  {
-    nombre: "Curso de coaching por valores",
-    id: 2,
-    precio: 149.99,
-    imagen: "https://picsum.photos/id/102/400/250",
-    descripcion:
-      "Aprende las técnicas y herramientas del coaching por valores para alcanzar tus metas y vivir una vida más plena y significativa.",
-  },
-  {
-    nombre: "Juego de mesa sobre valores",
-    id: 3,
-    precio: 39.99,
-    imagen: "https://picsum.photos/id/103/400/250",
-    descripcion:
-      "Diviértete mientras aprendes sobre valores importantes como la honestidad, el respeto y la empatía, a través de este juego de mesa educativo.",
-  },
-  {
-    nombre: "Camisa con mensaje inspirador",
-    id: 4,
-    precio: 19.99,
-    imagen: "https://picsum.photos/id/104/400/250",
-    descripcion:
-      "Viste con estilo y transmite un mensaje inspirador con esta camisa que te recordará la importancia de vivir de acuerdo a tus valores.",
-  },
-  {
-    nombre: "Taza motivacional",
-    id: 5,
-    precio: 9.99,
-    imagen: "https://picsum.photos/400/249",
-    descripcion:
-      "Empieza tus mañanas con una dosis de motivación con esta taza que te inspirará a perseguir tus sueños y alcanzar tus metas.",
-  },
-  {
-    nombre: "Kit de meditación",
-    id: 6,
-    precio: 49.99,
-    imagen: "https://picsum.photos/400/250",
-    descripcion:
-      "Encuentra la calma y la serenidad en tu vida diaria con este kit de meditación que incluye todo lo que necesitas para practicar la meditación y cultivar la paz interior.",
-  },
-];
+
+//Inicializar productos
+let productos = [];
+
+//Carga async de datos del Json pasa simular peticion a API
+const cargarProductos = async () => {
+  try {
+    const respuesta = await fetch("./data.json");
+    productos = await respuesta.json();
+    mostrarProductos();
+  } catch (error) {
+    Toastify({
+
+      text: "ERROR 404 / NO SE PUDO CARGAR LOS DATOS DEL SERVIDOR",
+      duration: 10000,
+      className: "toast-error",
+      close: true,
+      stopOnFocus: true,
+      
+    }).showToast();
+  }
+};
 
 // Carrito de compras
 let carrito = [];
@@ -68,23 +39,21 @@ let carrito = [];
 // Mostrar los productos en la página
 function mostrarProductos() {
   containerTienda.innerHTML = "";
-
   productos.forEach((producto) => {
-    const { nombre, precio, imagen, descripcion, id } = producto;
-
+    const { nombre, id, precio, imagen, descripcion } = producto;
     const card = document.createElement("div");
     card.classList.add("col");
     card.innerHTML = `
-      <div class="card h-40">
+      <div class="card">
         <img src="${imagen}" class="card-img-top" alt="${nombre}">
-        <div class="card-body">
+        <div class="card-body d-flex flex-column">
           <h5 class="card-title">${nombre}</h5>
-          <p class="card-text">${descripcion}</p>
+          <p class="card-text overflow-auto card-description">${descripcion}</p>
           <p class="card-text fw-bold">$${precio.toFixed(2)}</p>
           <button class="btn btn-primary btn-comprar" data-id="${id}">Comprar</button>
-        </div>
-      </div>
-    `;
+          </div>
+          </div>
+          `;
 
     containerTienda.appendChild(card);
   });
@@ -108,11 +77,11 @@ function actualizarCarrito() {
 
     const itemCarrito = document.createElement("li");
     itemCarrito.innerHTML = `
-      <span>${nombre} - $${precio.toFixed(2)} x ${cantidad}</span>
-      <button class="btn-eliminar-producto" data-id="${id}" data-action="eliminar">-</button>
-      <button class="btn-eliminar-producto" data-id="${id}" data-action="eliminarTodo">Eliminar</button>
-      <button class="btn-agregar-producto" data-id="${id}" data-action="agregar">+</button>
-    `;
+            <span>${nombre} - $${precio.toFixed(2)} x ${cantidad}</span>
+            <button class="btn-eliminar-producto" data-id="${id}" data-action="eliminar">-</button>
+            <button class="btn-eliminar-producto" data-id="${id}" data-action="eliminarTodo">Eliminar</button>
+            <button class="btn-agregar-producto" data-id="${id}" data-action="agregar">+</button>
+            `;
 
     carritoProductos.appendChild(itemCarrito);
   });
@@ -127,6 +96,8 @@ function agregarAlCarrito(id) {
 
     if (productoEnCarrito) {
       productoEnCarrito.cantidad++;
+      
+      
     } else {
       carrito.push({
         id: productoEncontrado.id,
@@ -136,6 +107,22 @@ function agregarAlCarrito(id) {
       });
     }
 
+    Toastify({
+
+      text: `x1 ${productoEncontrado.nombre} se agrego al carrito`,
+      
+      duration: 2400,
+      className: "toast-azul",
+      close: true,
+      stopOnFocus: true,
+      
+      //Abre el carrito si se hace click en el toast de toastify
+      onClick: () => {
+        carritoModal.classList.add("show");
+      }
+      
+    }).showToast();
+    
     actualizarCarrito();
     actualizarContadorCarrito();
     guardarCarritoEnLocalStorage();
@@ -145,10 +132,14 @@ function agregarAlCarrito(id) {
 
 // Eliminar un producto del carrito
 function eliminarDelCarrito(id) {
+  let nombreProductoEliminado = "";
   carrito = carrito
     .map((producto) => {
       if (producto.id === id) {
         producto.cantidad--;
+
+        //capturo el nombre del producto a eliminar en una variable en el scope de la funcion eliminarDelCarrito
+        nombreProductoEliminado = producto.nombre;
       }
       return producto;
     })
@@ -158,6 +149,16 @@ function eliminarDelCarrito(id) {
   actualizarContadorCarrito();
   guardarCarritoEnLocalStorage();
   actualizarTotalCarrito();
+
+  Toastify({
+
+    text: `x1 ${nombreProductoEliminado} se elimino del carrito`,
+    duration: 2400,
+    className: "toast-rojo",
+    close: true,
+    stopOnFocus: true,
+    
+  }).showToast();
 }
 
 // Eliminar todas las unidades de un producto del carrito
@@ -179,12 +180,9 @@ function vaciarCarrito() {
   actualizarTotalCarrito();
 }
 
-//La uso para poder diferenciar de un vaciado interno de un vaciado del usuario y evitar que el modal me tape los Sweet alert
+//La uso para poder diferenciar entre un vaciado interno de un vaciado del usuario y evitar que el modal me tape los Sweet alert
 function vaciarCarritoManualmente() {
-
-
   if (carrito.length == 0) {
-   
     // Alerta de carrito vacío al intentar pagar
     carritoModal.classList.remove("show");
     Swal.fire({
@@ -193,7 +191,6 @@ function vaciarCarritoManualmente() {
       icon: "error",
     });
   } else {
-   
     // Preguntar confirmación antes de vaciar el carrito
     carritoModal.classList.remove("show");
     Swal.fire({
@@ -308,9 +305,9 @@ carritoIcono.addEventListener("click", () => {
 // Evento para cerrar el carrito modal
 
 //Cuando se pulsa esc
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') {
-    carritoModal.classList.remove('show');
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    carritoModal.classList.remove("show");
   }
 });
 
@@ -367,5 +364,5 @@ document.addEventListener("DOMContentLoaded", cargarCarritoDesdeLocalStorage);
 // Guardar carrito en el Local Storage antes de cerrar la página
 window.addEventListener("beforeunload", guardarCarritoEnLocalStorage);
 
-// Mostrar los productos iniciales
-mostrarProductos();
+// Cargar datos Json y Mostrar los productos iniciales
+cargarProductos();

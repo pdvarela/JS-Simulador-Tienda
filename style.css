@@ -23,6 +23,9 @@
     padding-left: 3rem;
     font-size: 27px;
   }
+  .col{
+    padding-bottom: 40px;
+  }
   
   .container_tienda {
     padding: 2em;
@@ -36,24 +39,24 @@
     background-color: var(--blanco-variante2);
   }
   
-  .container_tienda .contenedor_boton {
+  .contenedor_boton {
     padding: 4rem 0rem;
-    margin-top: 4rem;
-    margin-bottom: 4rem;
+    margin: 4rem 4rem 6rem 2rem;
+    
   }
   
-  .container_tienda .contenedor_boton h5 {
+   .contenedor_boton h5 {
     padding-bottom: 2rem 0 1rem 0;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
   }
   
-  .container_tienda .contenedor_boton .btn {
+  .contenedor_boton .btn {
     background-color: #1B2DCC;
     color: var(--blanco_puro);
     border-radius: 4px;
   }
   
-  .container_tienda .contenedor_boton .menu-desplegable {
+  .contenedor_boton .menu-desplegable {
     background-color: rgba(22, 56, 248, 0.192);
     background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.5));
     backdrop-filter: blur(5px);
@@ -61,12 +64,12 @@
     bottom: 1;
   }
   
-  .container_tienda .contenedor_boton a {
+  .contenedor_boton a {
     color: var(--negrok);
     font-weight: 500;
   }
   
-  .container_tienda .contenedor_boton a:hover {
+  .contenedor_boton a:hover {
     scale: 1.0625;
     background-color: rgba(50, 255, 159, 0.034);
     backdrop-filter: blur(7px);
@@ -97,6 +100,51 @@
     animation: scaling 0.3s ease-in-out;
     color: #f7f7f7;
   }
+
+  .card-description{
+    height: 150px;
+  }
+
+  .card-title{
+    height: 50px;
+    margin-bottom: 2em;
+  }
+
+  /* Estilos para el fondo azul del toast */
+.toast-azul {
+  background: linear-gradient(to right, #0059fd, #1B2DCC);
+  color: white;
+}
+
+/* Estilos para el fondo rojo del toast */
+.toast-rojo {
+  background: linear-gradient(to right, #e05353, #d13939);
+  color: white;
+}
+
+.toast-error {
+  background: linear-gradient(to right, #e05353, #d13939);
+  color: rgb(250, 225, 0);
+  font-weight: 500;
+  animation: blinkAnimation 1.5s infinite;
+  border-radius: 4px;
+}
+
+/* animación con @keyframes para toast error */
+@keyframes blinkAnimation {
+  0% {
+    opacity: 1;
+    scale: 1;
+  }
+  50% {
+    opacity: 0.9;
+    scale: 1.125;
+  }
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
 
   /*---------------------------- FOOTER ------------------------- */
 
