@@ -1,4 +1,4 @@
-// Peter Varela Comision 43125 Preentrega 3
+// Peter Varela Comision 43125 Entrega Final
 
 // Obtener referencias a los elementos HTML (dom) relevantes
 const containerTienda = document.getElementById("tienda");
@@ -189,6 +189,7 @@ function vaciarCarritoManualmente() {
       title: "Carrito vacío",
       text: "No hay productos en el carrito para realizar el pago.",
       icon: "error",
+      confirmButtonColor: "#1B2DCC"
     });
   } else {
     // Preguntar confirmación antes de vaciar el carrito
@@ -199,6 +200,7 @@ function vaciarCarritoManualmente() {
       icon: "question",
       showCancelButton: true,
       confirmButtonText: "Vaciar",
+      confirmButtonColor: "#1B2DCC",
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
@@ -213,6 +215,7 @@ function vaciarCarritoManualmente() {
           title: "Carrito vaciado",
           text: "El carrito se ha vaciado correctamente.",
           icon: "success",
+          confirmButtonColor: "#1B2DCC"
         });
       }
     });
@@ -255,6 +258,7 @@ function pagar() {
       showCancelButton: true,
       confirmButtonText: "Pagar",
       cancelButtonText: "Cancelar",
+      confirmButtonColor: "#1B2DCC"
     }).then((result) => {
       if (result.isConfirmed) {
         // Simulación de pago exitoso
@@ -263,6 +267,7 @@ function pagar() {
           title: "¡Pago realizado!",
           text: "Gracias por tu compra. El pago se ha realizado correctamente.",
           icon: "success",
+          confirmButtonColor: "#1B2DCC"
         });
         vaciarCarrito();
         actualizarTotalCarrito();
@@ -276,6 +281,7 @@ function pagar() {
       title: "Carrito vacío",
       text: "No hay productos en el carrito para realizar el pago.",
       icon: "error",
+      confirmButtonColor: "#1B2DCC"
     });
   }
 }
